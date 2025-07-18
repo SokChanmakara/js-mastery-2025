@@ -5,28 +5,28 @@ let tasks = [];
 const taskForm = document.getElementById("task-form");
 const taskList = document.getElementById("task-list");
 const taskInput = document.getElementById("task-input");
-const STORAGE_KEY = 'taskManager .tasks';
+const STORAGE_KEY = "taskManager .tasks";
 
 // ========== COOKIE HELPER FUNCTIONS ===================
 function setLocalStorage(name, value) {
-  localStorage.setItem(name, JSON.stringify(value))
+  localStorage.setItem(name, JSON.stringify(value));
 }
 
 function getLocalStorage(name) {
   const data = localStorage.getItem(name);
-  return data? JSON.parse(data) : null;
+  return data ? JSON.parse(data) : null;
 }
 
 // ========== FUNCTION TO SAVE TASKS TO COOKIE ===========
 
 function saveTaskToLocalStorage() {
-  setLocalStorage('tasks', tasks);
+  setLocalStorage("tasks", tasks);
 }
 
 // ========== FUNCTION TO LOAD TASKS FROM COOKIE =========
 
 function loadTaskFromLocalStorage() {
-  const saved = getLocalStorage('tasks');
+  const saved = getLocalStorage("tasks");
   tasks = saved || [];
 }
 
