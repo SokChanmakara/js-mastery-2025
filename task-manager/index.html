@@ -14,17 +14,32 @@
         placeholder="Enter new task..."
         required
       />
-      <input type="date" id="due-date-input"/>
-      <input type="text" id="category-input" placeholder="Category"/>
+      <input type="date" id="due-date-input" />
       <button type="submit" id="submit">Add Task</button>
     </form>
-    <select  id="sort-select">
+    <select id="sort-select">
       <option value="default">Sort: Default</option>
       <option value="title">Sort by Title</option>
       <option value="dueDate">Sort by Due Date</option>
+      <option value="dueDate">Show Completed Only</option>
     </select>
-    <ul id="task-list"></ul>
 
+
+    <select id="category-select">
+      <option value="default">Select Category</option>
+      <option value="Work">Work</option>
+      <option value="Personal">Personal</option>
+      <option value="School">School</option>
+      <option value="Urgent">Urgent</option>
+      <option value="other">Other...</option>
+    </select>
+    <input
+      type="text"
+      id="custom-category-input"
+      placeholder="Custom category"
+      style="display: none"
+    />
+    <ul id="task-list"></ul>
 
     <script src="script.js" type="module"></script>
   </body>

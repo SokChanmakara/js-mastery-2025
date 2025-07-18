@@ -6,8 +6,9 @@ const taskForm = document.getElementById("task-form");
 const taskList = document.getElementById("task-list");
 const taskInput = document.getElementById("task-input");
 const dueDateInput = document.getElementById("due-date-input");
-const categoryInput = document.getElementById("category-input");
 const sortSelect = document.getElementById("sort-select");
+const categorySelect = document.getElementById("category-select");
+const customCategoryInput = document.getElementById("custom-category-input");
 const STORAGE_KEY = "taskManager.tasks";
 
 // ========== COOKIE HELPER FUNCTIONS ===================
@@ -20,13 +21,13 @@ function getLocalStorage(name) {
   return data ? JSON.parse(data) : null;
 }
 
-// ========== FUNCTION TO SAVE TASKS TO COOKIE ===========
+// ========== FUNCTION TO SAVE TASKS TO LOCALSTOREAGE ===========
 
 function saveTaskToLocalStorage() {
   setLocalStorage(STORAGE_KEY, tasks);
 }
 
-// ========== FUNCTION TO LOAD TASKS FROM COOKIE =========
+// ========== FUNCTION TO LOAD TASKS FROM LOCALSTORAGE =========
 
 function loadTaskFromLocalStorage() {
   const saved = getLocalStorage(STORAGE_KEY);
@@ -39,9 +40,11 @@ function renderTask() {
   let sortedTasks = [...tasks];
   const sortValue = sortSelect.value;
 
-  //============== SORTED BY TITLE & DUE DATE ==========================
+  //============== SORTED BY TITLE & DUE DATE & COMPLETED ==========================
   if (sortValue === "title") {
-    sortedTasks.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
+    sortedTasks.sort((a, b) =>
+      a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+    );
   } else if (sortValue === "dueDate") {
     sortedTasks.sort((a, b) => {
       if (!a.dueDate) return 1;
@@ -73,21 +76,21 @@ function renderTask() {
     }
 
     //==== DUE DATE ======
-    const dateSpan = document.createElement('span');
-    dateSpan.textContent = task.dueDate? `Due: ${task.dueDate}`: "";
+    const dateSpan = document.createElement("span");
+    dateSpan.textContent = task.dueDate ? `Due: ${task.dueDate}` : "";
     dateSpan.className = "task-due-date";
 
     //===== CATEGORY ======
-    const categorySpan = document.createElement('span');
-    categorySpan.textContent = task.category? task.category: "";
-    categorySpan.className = "task-category";
+    const categorySpan = document.createElement("span");
+    categorySpan.textContent = task.category ? task.category : "";
+    categorySpan.className = `task-category ${getCategoryClass(task.category)}`;
 
     //====== WRAP TEXT ELEMENT ===========
-    const taskDetailDiv = document.createElement('div');
+    const taskDetailDiv = document.createElement("div");
     taskDetailDiv.className = "task-details";
     taskDetailDiv.appendChild(titleSpan);
-    if(task.dueDate) taskDetailDiv.appendChild(dateSpan);
-    if(task.category) taskDetailDiv.appendChild(categorySpan);
+    if (task.dueDate) taskDetailDiv.appendChild(dateSpan);
+    if (task.category) taskDetailDiv.appendChild(categorySpan);
 
     //================= CLICK EDIT TITLE ==============
     titleSpan.addEventListener("click", () => {
@@ -120,6 +123,16 @@ function renderTask() {
     taskList.appendChild(li);
   });
 }
+
+//================= CATEGORY SELECT FOR OTHER, CUSTOM INPUT ===============
+categorySelect.addEventListener("change", () => {
+  if (categorySelect.value === "other") {
+    customCategoryInput.style.display = "inline-block";
+  } else {
+    customCategoryInput.style.display = "none";
+    customCategoryInput.value = "";
+  }
+});
 
 //============== FUNCTION TO ADD TASK ===================
 function addTask(title, dueDate, category) {
@@ -159,14 +172,30 @@ taskForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const title = taskInput.value.trim();
   const dueDate = dueDateInput.value;
-  const category = categoryInput.value.trim();
+  const selectedCategory = categorySelect.value;
+  const customCategory = customCategoryInput.value.trim();
+  const finalCategory =
+    selectedCategory === "other" ? customCategory : selectedCategory;
   if (title) {
-    addTask(title, dueDate, category);
+    addTask(title, dueDate, finalCategory);
     taskInput.value = "";
     dueDateInput.value = "";
-    categoryInput.value = "";
+    categorySelect.value = "default";
+    customCategoryInput.value = "";
+    customCategoryInput.style.display = "none";
     taskInput.focus();
   }
 });
+
+//================= GET COLOR BY CATEGORY ====================
+function getCategoryClass(category) {
+  const cat = category.toLowerCase();
+  if (cat.includes("work")) return "badge-work";
+  if (cat.includes("personal")) return "badge-personal";
+  if (cat.includes("travel") || cat.includes("trip")) return "badge-travel";
+  if (cat.includes("school") || cat.includes("study")) return "badge-school";
+  if (cat.includes("urgent")) return "badge-urgent";
+  return "badge-default";
+}
 loadTaskFromLocalStorage();
 renderTask();

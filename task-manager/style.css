@@ -16,7 +16,7 @@ form {
 }
 form input[type="text"],
 form input[type="date"],
-form input[type="text"]#category-input {
+form input[type="text"] {
   flex: 1 1 200px;
   padding: 0.5rem;
   font-size: 1rem;
@@ -31,6 +31,7 @@ select {
   margin-bottom: 1rem;
   padding: 0.5rem;
   font-size: 1rem;
+  
 }
 
 ul {
@@ -84,6 +85,36 @@ li input[type="checkbox"] {
   width: fit-content;
 }
 
+.badge-work {
+  background-color: #e0f2ff;
+  color: #007acc;
+}
+
+.badge-travel {
+  background-color: #e0f7fa;
+  color: #00695c;
+}
+
+.badge-personal {
+  background-color: #e7fbe7;
+  color: #2d862d;
+}
+
+.badge-school {
+  background-color: #f0e6ff;
+  color: #7a4fcf;
+}
+
+.badge-urgent {
+  background-color: #ffe5e5;
+  color: #cc0000;
+}
+
+.badge-default {
+  background-color: #eeeeee;
+  color: #555;
+}
+
 .delete-btn {
   background: #e74c3c;
   color: white;
@@ -91,4 +122,10 @@ li input[type="checkbox"] {
   border-radius: 4px;
   cursor: pointer;
   padding: 0.25rem 0.5rem;
+}
+#custom-category-input {
+  flex: 1 1 200px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  min-width: 150px;
 }
