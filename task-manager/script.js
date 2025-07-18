@@ -51,8 +51,11 @@ function renderTask() {
       if (!b.dueDate) return -1;
       return new Date(a.dueDate) - new Date(b.dueDate);
     });
+  } else if (sortValue === 'completed'){
+    sortedTasks.sort((a,b)=>{
+      return b.completed - a.completed;
+    });
   }
-
   sortedTasks.forEach((task, index) => {
     const originalIndex = tasks.indexOf(task);
     const li = document.createElement("li");
@@ -123,6 +126,8 @@ function renderTask() {
     taskList.appendChild(li);
   });
 }
+sortSelect.addEventListener("change", renderTask);
+//====================END OF RENDER FUNCTION =============================
 
 //================= CATEGORY SELECT FOR OTHER, CUSTOM INPUT ===============
 categorySelect.addEventListener("change", () => {
@@ -180,7 +185,7 @@ taskForm.addEventListener("submit", (e) => {
     addTask(title, dueDate, finalCategory);
     taskInput.value = "";
     dueDateInput.value = "";
-    categorySelect.value = "default";
+    categorySelect.value = "";
     customCategoryInput.value = "";
     customCategoryInput.style.display = "none";
     taskInput.focus();
